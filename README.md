@@ -30,7 +30,7 @@ Kubernetes のダッシュボードも使えます。
 $ kubectl proxy
 ```
 下記の URL からダッシュボードを表示できます。  
-127.0.0.1:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/overview?namespace=default
+http://127.0.0.1:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/overview?namespace=default
 
 ## AKS にコンテナをデプロイする
 さっそく、AKS にコンテナをデプロイしてみましょう。シンプルな NGINX のコンテナイメージを使います。
