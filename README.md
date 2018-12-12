@@ -29,7 +29,8 @@ Kubernetes のダッシュボードも使えます。
 ```shell-session
 $ kubectl proxy
 ```
-[こちら](127.0.0.1:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/overview?namespace=default) のURL から、ダッシュボードを表示できます。
+下記の URL からダッシュボードを表示できます。  
+127.0.0.1:8001/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy/#!/overview?namespace=default
 
 ## AKS にコンテナをデプロイする
 さっそく、AKS にコンテナをデプロイしてみましょう。シンプルな NGINX のコンテナイメージを使います。
@@ -119,7 +120,7 @@ spec:
 
 ## AKS に Helm を使って nginx-ingress をデプロイする
 
-Helm Charts のリポジトリが公開されているので、いろいろなアプリを k8s にデプロイできます。
+Helm Charts のリポジトリが公開されているので、いろいろなアプリを k8s にデプロイできます。  
 https://hub.kubeapps.com/
 
 ここでは、nginx-ingress をデプロイします。
