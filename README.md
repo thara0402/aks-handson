@@ -97,7 +97,7 @@ nginx がデプロイされる構成になっているので、下記の項目�
 Parameter | Description | value
 --------- | ----------- | -------
 `image.repository` | デプロイする Docker image | `thara0402/k8sdemo`
-`image.tag` | デプロイする Docker image のタグ | `0.01.0`
+`image.tag` | デプロイする Docker image のタグ | `0.1.0`
 `service.type` | サービスのタイプ | `LoadBalancer`
 
 values.yaml の編集が完了したら、デプロイします。
