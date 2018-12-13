@@ -93,6 +93,7 @@ $ helm create k8sdemo
 ```
 k8sdemo ディレクトリに作成された values.yaml を開きます。  
 nginx がデプロイされる構成になっているので、下記の項目を編集します。
+
 Parameter | Description | value
 --------- | ----------- | -------
 `image.repository` | デプロイする Docker image | `thara0402/k8sdemo`
