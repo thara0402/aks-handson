@@ -67,8 +67,6 @@ $ docker push thara0402/k8sdemo:0.1.0
 ```shell-session
 $ kubectl apply -f deployment.yaml
 $ kubectl apply -f service.yaml
-$ kubectl apply -f deployment2.yaml
-$ kubectl apply -f service.yaml
 $ kubectl get deploy -l app=demo-app
 $ kubectl get deploy -l app=demo-app,version=v10
 $ kubectl delete -f deployment.yaml
@@ -76,11 +74,34 @@ $ kubectl delete -f deployment.yaml
 
 ## AKS に Helm を使ってコンテナをデプロイする
 公式サイトから helm.exe をダウンロードして、任意のフォルダに配置し、環境変数にパスを通せば完了です。  
+k8s に Helm のサーバーサイドになる tiller という Pod を作成します。
 
 ```shell-session
 $ helm init
-$ helm instll -n <release name> <charts name>
-$ helm delete <release name> --purge
+$ kubectl get pod --all-namespaces
+```
+Helm の Server と Client のバージョンが表示できれば成功です。
+```shell-session
+$ helm version
+```
+
+ASP.NET Core プロジェクトに Dockerfile と同じディレクトリに移動します。
+```shell-session
+$ mkdir chats
+$ cd chats
+$ helm create k8sdemo
+```
+k8sdemo ディレクトリに作成された values.yaml を開きます。  
+nginx がデプロイされる構成になっているので、下記の項目を編集します。
+Parameter | Description | value
+--------- | ----------- | -------
+`image.repository` | デプロイする Docker image | `thara0402/k8sdemo`
+`image.tag` | デプロイする Docker image のタグ | `0.01.0`
+`service.type` | サービスのタイプ | `LoadBalancer`
+
+values.yaml の編集が完了したら、デプロイします。
+```shell-session
+$ helm instll -n k8sapp k8sdemo
 ```
 
 ## AKS に ACR からコンテナをデプロイする
