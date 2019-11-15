@@ -15,7 +15,7 @@ Azure Container Registry でもいいですが、AKS にコンテナをデプロ
 Azure CLI 2.0 を使って、AKS から資格情報を取得しましょう。
 
 ```shell-session
-$ az aks get-credentials --resource-group xxx --name xxx
+$ az aks get-credentials --g xxx --n xxx
 ```
 
 ## kubectl をインストールする
@@ -25,7 +25,12 @@ $ az aks get-credentials --resource-group xxx --name xxx
 ```shell-session
 $ kubectl get nodes
 ```
-Kubernetes のダッシュボードも使えます。
+Kubernetes のダッシュボードも使えます。  
+AKS を作成する際に RBAC を有効にしている場合は、権限を付与します。
+```shell-session
+kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+```
+ダッシュボードのプロキシを作成します。
 ```shell-session
 $ kubectl proxy
 ```
@@ -57,9 +62,9 @@ $ kubectl exec -it POD_NAME /bin/sh
 ASP.NET Core プロジェクトに Dockerfile を追加すれば OK です。
 
 ```shell-session
-$ docker build -t thara0402/k8sdemo:0.1.0 ./
-$ docker run --rm -it -p 8000:80 --name k8sdemo thara0402/k8sdemo:0.1.0
-$ docker push thara0402/k8sdemo:0.1.0
+$ docker build -t thara0402/k8sdemo:3.0.0 .
+$ docker run --rm -it -p 8000:80 --name k8sdemo thara0402/k8sdemo:3.0.0
+$ docker push thara0402/k8sdemo:3.0.0
 ```
 
 ここでは、YAML ファイルを使って、AKS にデプロイしてみます。
@@ -71,13 +76,14 @@ $ kubectl get deploy -l app=demo-app
 $ kubectl get deploy -l app=demo-app,version=v10
 $ kubectl delete -f deployment.yaml
 ```
-
 ## AKS に Helm を使ってコンテナをデプロイする
-公式サイトから helm.exe をダウンロードして、任意のフォルダに配置し、環境変数にパスを通せば完了です。  
-k8s に Helm のサーバーサイドになる tiller という Pod を作成します。
+公式サイトから helm.exe をダウンロードして、任意のフォルダに配置し、環境変数にパスを通せば完了です。 
 
+k8s に Helm のサーバーサイドになる tiller という Pod を作成します。  
+AKS を作成する際に RBAC を有効にしている場合は、権限を付与します。
 ```shell-session
-$ helm init
+$ kubectl apply -f service.yaml
+$ helm init --service-account=tiller
 $ kubectl get pod --all-namespaces
 ```
 Helm の Server と Client のバージョンが表示できれば成功です。
@@ -97,12 +103,22 @@ nginx がデプロイされる構成になっているので、下記の項目�
 Parameter | Description | value
 --------- | ----------- | -------
 `image.repository` | デプロイする Docker image | `thara0402/k8sdemo`
-`image.tag` | デプロイする Docker image のタグ | `0.1.0`
+`image.tag` | デプロイする Docker image のタグ | `3.0.0`
 `service.type` | サービスのタイプ | `LoadBalancer`
 
 values.yaml の編集が完了したら、デプロイします。
 ```shell-session
-$ helm instll -n k8sapp k8sdemo
+$ helm install -n webapp k8sdemo
+```
+
+デプロイしたアプリを更新する場合は、こちらのコマンドを使います。
+```shell-session
+$ helm upgrade webapp k8sdemo
+```
+
+削除する際に、引数で purge を指定することで再度同じ名前でデプロイできます。
+```shell-session
+$ helm delete webapp --purge
 ```
 
 ## AKS に ACR からコンテナをデプロイする
