@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: k8sdemo
-        image: thara0402/k8sdemo:0.10.0
+        image: thara0402/k8sdemo:3.0.0
         ports:
           - containerPort: 80

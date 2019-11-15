@@ -1,10 +1,10 @@
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0 AS build
 WORKDIR /code
 COPY . .
 RUN dotnet restore
 RUN dotnet publish --output /output --configuration Release
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0
 COPY --from=build /output /app
 WORKDIR /app
 ENTRYPOINT ["dotnet", "k8sdemo.dll"]
