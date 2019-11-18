@@ -15,7 +15,7 @@ Azure Container Registry でもいいですが、AKS にコンテナをデプロ
 Azure CLI 2.0 を使って、AKS から資格情報を取得しましょう。
 
 ```shell-session
-$ az aks get-credentials --g xxx --n xxx
+$ az aks get-credentials -g xxx -n xxx
 ```
 
 ## kubectl をインストールする
