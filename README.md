@@ -82,7 +82,7 @@ $ kubectl delete -f deployment.yaml
 k8s に Helm のサーバーサイドになる tiller という Pod を作成します。  
 AKS を作成する際に RBAC を有効にしている場合は、権限を付与します。
 ```shell-session
-$ kubectl apply -f service.yaml
+$ kubectl apply -f serviceaccount.yaml
 $ helm init --service-account=tiller
 $ kubectl get pod --all-namespaces
 ```
